@@ -20,7 +20,7 @@ export default function Home(){
     // ฟังก์ชันโหลดค่า
     async function loadFruit(){
         const data = await AsyncStorage.getItem("fruit")
-        if(data != ""){
+        if (data !== null) {
             setFruit(data!.toString())
         }
     }
