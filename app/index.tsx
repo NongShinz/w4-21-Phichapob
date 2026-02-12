@@ -1,6 +1,6 @@
-import { Text, TextInput, TouchableOpacity, View, StyleSheet } from "react-native"
-import AsyncStorage from '@react-native-async-storage/async-storage'
-import { useState, useEffect } from "react"
+import { View, Text, TextInput, TouchableOpacity, StyleSheet } from "react-native"
+import AsyncStorage from "@react-native-async-storage/async-storage"
+import {useState, useEffect} from "react";
 
 export default function Home(){
     const [text, setText] = useState("")
@@ -10,88 +10,102 @@ export default function Home(){
     useEffect(() => {
         loadFruit()
     }, [])
-
-    // ฟังก์ชั่นบันทึก
+    // ฟังก์ชันบันทึก
     async function saveFruit(){
         await AsyncStorage.setItem("fruit", text)
         setFruit(text)
         setText("")
     }
 
-    // ฟังก์ชั่นโหลดค่า (แก้ไขแล้ว)
+    // ฟังก์ชันโหลดค่า
     async function loadFruit(){
         const data = await AsyncStorage.getItem("fruit")
-        if (data !== null) {
-            setFruit(data)
+        if(data != ""){
+            setFruit(data!.toString())
         }
     }
 
-    // ฟังก์ชั่นลบ
+    // ฟังก์ชั่นลบค่า
     async function removeFruit() {
         await AsyncStorage.removeItem("fruit")
         setFruit("")
     }
 
-    return(
-        <View style={myStyles.container}>
-            {/* แสดงสิ่งที่บันทึก */}
-            <Text style={myStyles.fruitText}>Fruit : {fruit}</Text>
+    return (
+        <View style={myStyle.container}>
+            <Text style={[myStyle.box2, myStyle.text1]}>Fruit Save</Text>
 
-            {/* รับข้อความเข้ามา */}
-            <TextInput
-                style={myStyles.input}
-                value={text}
-                onChangeText={setText}
-            />
+            {/*  แสดงสิ่งที่บันทึก */}
+             <Text style={[myStyle.box3, myStyle.text1]}>Fruit : {fruit}</Text>
 
-            {/* ปุ่มบันทึก */}
-            <TouchableOpacity style={myStyles.saveButton} onPress={saveFruit}>
-                <Text>บันทึก</Text>
-            </TouchableOpacity>
+            {/* รับข้อความ */}
+             <TextInput style={myStyle.input} value={text} onChangeText={setText}/>
 
-            {/* ปุ่มลบ */}
-            <TouchableOpacity style={myStyles.saveButton} onPress={removeFruit}>
+             {/* ปุ่มบันทึก */}
+             <TouchableOpacity onPress={saveFruit} style={myStyle.box}>
+                 <Text>บันทึก</Text>
+             </TouchableOpacity>
+
+             {/* ปุ่มลบ */}
+              <TouchableOpacity onPress={removeFruit} style={myStyle.box}>
                 <Text>ลบ</Text>
-            </TouchableOpacity>
+           </TouchableOpacity>
         </View>
     )
 }
 
-const myStyles = StyleSheet.create({
+const myStyle = StyleSheet.create({
     container:{
         flex:1,
         justifyContent:"center",
         alignItems:"center",
-        backgroundColor:"#FFCC80"
+        backgroundColor:"lightblue",
+        borderColor:"black"
     },
     input:{
-        borderWidth:1,
+        borderWidth:2,
         width:"80%",
-        margin:15,
-        padding:10,
-        borderEndWidth:1.5,
-        borderRadius:10,
-        backgroundColor:"#FFFFFF",
-        color:"#000000"
+        borderRadius:8,
+        backgroundColor: "white",
+        height:"5%"
     },
-    saveButton:{
-        backgroundColor:"#B3E5FC",
+    box:{
         width:"50%",
-        paddingVertical:12,
-        borderRadius:10,
+        height:40,
+        backgroundColor: "white",
+        borderColor: "black",
+        borderWidth: 2,
         alignItems:"center",
-        marginBottom:10,
-        borderWidth:1.5,
-        borderColor:"#000000"
+        justifyContent: "center",
+        borderRadius: 8,
+        marginTop:10
     },
-    fruitText:{
-        backgroundColor:"#B3E5FC",
+    box2:{
         width:"50%",
-        paddingVertical:12,
-        borderRadius:10,
-        marginBottom:15,
-        borderWidth:1.5,
-        borderColor:"#000000",
-        textAlign:"center"
+        height:40,
+        backgroundColor: "white",
+        borderColor: "black",
+        borderWidth: 2,
+        alignItems:"center",
+        justifyContent: "center",
+        borderRadius: 8,
+        margin:10,
+        textAlign: "center"
+    },
+    box3:{
+        width:"70%",
+        height:40,
+        backgroundColor: "white",
+        borderColor: "black",
+        borderWidth: 2,
+        alignItems:"center",
+        justifyContent: "center",
+        borderRadius: 8,
+        margin:10,
+        textAlign: "center",
+    },
+    text1:{
+        fontSize:20,
+        fontWeight:"bold"
     }
 })
